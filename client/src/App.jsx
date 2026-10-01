@@ -51,7 +51,7 @@ function App() {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>MERN Student Manager</h1>
+      <h1>MERN Student Manager - Version 2.0</h1>
       
       <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
         <input type="text" name="studentId" placeholder="MSSV" value={formData.studentId} onChange={handleChange} required />
