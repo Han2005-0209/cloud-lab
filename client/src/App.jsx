@@ -3,14 +3,28 @@ import React, { useEffect, useState } from 'react';
 const emptyForm = { studentId: '', name: '', email: '' };
 
 async function request(path, options = {}) {
-  const response = await fetch(path, options);
-  const contentType = response.headers.get('content-type') || '';
-  if (!contentType.includes('application/json')) {
-    throw new Error('Máy chủ đang tạm thời không sẵn sàng. Vui lòng thử lại.');
+  const isRead = !options.method || options.method === 'GET';
+  for (let attempt = 0; attempt < (isRead ? 12 : 1); attempt += 1) {
+    let response;
+    try {
+      response = await fetch(path, options);
+    } catch (error) {
+      if (!isRead || attempt === 11) throw error;
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      continue;
+    }
+    if (isRead && [502, 503, 504].includes(response.status) && attempt < 11) {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      continue;
+    }
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error('Máy chủ đang tạm thời không sẵn sàng. Vui lòng thử lại.');
+    }
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || data.message || 'Yêu cầu không thành công.');
+    return data;
   }
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || data.message || 'Yêu cầu không thành công.');
-  return data;
 }
 
 function App() {
@@ -98,7 +112,7 @@ function App() {
 
       <h2>Danh sách sinh viên</h2>
       <button type="button" onClick={fetchStudents} disabled={loading}>Làm mới</button>
-      {loading ? <p>Đang tải...</p> : (
+      {loading ? <p>Đang tải dữ liệu, máy chủ miễn phí có thể cần khoảng một phút để khởi động...</p> : (
         <div style={{ overflowX: 'auto', marginTop: 16 }}>
           <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
             <thead><tr><th>MSSV</th><th>Họ và tên</th><th>Email</th><th>Thao tác</th></tr></thead>
