@@ -24,7 +24,7 @@ DANH SÁCH ĐƯỜNG LINK BẰNG CHỨNG SẢN PHẨM:
 XÁC NHẬN KẾT QUẢ HỆ THỐNG:
 [X] Ứng dụng hoạt động trên Render.com.
 [X] HTTPS và reverse proxy /api hoạt động.
-[ ] Chưa cấu hình Docker Hub Webhooks để tự động triển khai.
+[X] Docker Hub Webhooks đã gọi Deploy Hook trên Render.
 [X] Backend kết nối MongoDB Atlas qua Environment Variables.
 [X] Dịch vụ Render dùng gói Free.
 ====================================================================
