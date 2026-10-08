@@ -1,0 +1,30 @@
+====================================================================
+BÁO CÁO KẾT QUẢ THỰC HÀNH MÔN ĐIỆN TOÁN ĐÁM MÂY (LAB 01 - LAB 06)
+====================================================================
+1. Họ và tên Sinh viên: Trần Gia Hân
+2. Mã số Sinh viên (MSSV): 236894
+3. Lớp / Nhóm thực hành: DH23TIN08
+--------------------------------------------------------------------
+DANH SÁCH ĐƯỜNG LINK BẰNG CHỨNG SẢN PHẨM:
+- Link GitHub Repository (Buổi 1 - 6):
+  https://github.com/Han2005-0209/cloud-lab
+
+- Link Docker Hub Backend Repository (Buổi 4 - 6):
+  https://hub.docker.com/r/trangiahan2005/mern-backend
+
+- Link Docker Hub Frontend Repository (Buổi 4 - 6):
+  https://hub.docker.com/r/trangiahan2005/mern-frontend
+
+- Link Cloud PaaS Production App (Buổi 5 - 6):
+  https://mern-frontend-236894.onrender.com
+
+- Link Cloud PaaS Backend API Endpoint (Buổi 5 - 6):
+  https://mern-frontend-236894.onrender.com/api/students
+--------------------------------------------------------------------
+XÁC NHẬN KẾT QUẢ HỆ THỐNG:
+[X] Ứng dụng hoạt động trên Render.com.
+[X] HTTPS và reverse proxy /api hoạt động.
+[ ] Chưa cấu hình Docker Hub Webhooks để tự động triển khai.
+[X] Backend kết nối MongoDB Atlas qua Environment Variables.
+[X] Dịch vụ Render dùng gói Free.
+====================================================================

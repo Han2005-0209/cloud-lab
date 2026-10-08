@@ -1,4 +1,5 @@
-# Thực hành Điện toán đám mây
+# Cloud Computing Laboratory
 
-Họ và tên: Trần Gia Hân
-Mã sinh viên: 236894
+Student Name: Trần Gia Hân
+Student ID: 236894
+Class: DH23TIN08
