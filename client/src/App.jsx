@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './App.css';
 
 const emptyForm = { studentId: '', name: '', email: '' };
 
@@ -93,44 +94,66 @@ function App() {
   }
 
   return (
-    <main style={{ maxWidth: 1000, margin: '32px auto', padding: 20, fontFamily: 'sans-serif' }}>
-      <h1>Quản lý sinh viên</h1>
-      <p>Phiên bản 2.0 - Production Cloud PaaS</p>
-      <p>Thêm, xem, sửa và xóa sinh viên trên MongoDB Atlas.</p>
-      {error && <p role="alert" style={{ color: '#a12622' }}>{error} <button onClick={fetchStudents}>Thử lại</button></p>}
+    <main className="page-shell">
+      <header className="site-header">
+        <div className="brand"><span className="brand-mark">H.</span><span>HỒ SƠ SINH VIÊN</span></div>
+        <span className="course-label">THỰC HÀNH ĐIỆN TOÁN ĐÁM MÂY</span>
+      </header>
 
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 10, marginBottom: 32 }}>
-        <h2>{editingId ? 'Sửa sinh viên' : 'Thêm sinh viên'}</h2>
-        <label>Mã số sinh viên <input name="studentId" value={formData.studentId} onChange={handleChange} required /></label>
-        <label>Họ và tên <input name="name" value={formData.name} onChange={handleChange} required /></label>
-        <label>Email <input name="email" type="email" value={formData.email} onChange={handleChange} required /></label>
+      <section className="intro">
         <div>
-          <button type="submit">{editingId ? 'Lưu thay đổi' : 'Thêm sinh viên'}</button>
-          {editingId && <button type="button" onClick={cancelEdit} style={{ marginLeft: 8 }}>Hủy</button>}
+          <p className="eyebrow">PHIÊN BẢN 2.0 · PRODUCTION CLOUD PAAS</p>
+          <h1>Quản lý sinh viên</h1>
+          <p className="intro-copy">Thêm, xem, sửa và xóa thông tin sinh viên trên MongoDB Atlas.</p>
         </div>
-      </form>
+        <div className="student-count" aria-label={`${students.length} sinh viên đã lưu`}>
+          <strong>{String(students.length).padStart(2, '0')}</strong>
+          <span>SINH VIÊN ĐÃ LƯU</span>
+        </div>
+      </section>
 
-      <h2>Danh sách sinh viên</h2>
-      <button type="button" onClick={fetchStudents} disabled={loading}>Làm mới</button>
-      {loading ? <p>Đang tải dữ liệu, máy chủ miễn phí có thể cần khoảng một phút để khởi động...</p> : (
-        <div style={{ overflowX: 'auto', marginTop: 16 }}>
-          <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <thead><tr><th>MSSV</th><th>Họ và tên</th><th>Email</th><th>Thao tác</th></tr></thead>
-            <tbody>
-              {students.map(student => (
-                <tr key={student._id}>
-                  <td>{student.studentId}</td><td>{student.name}</td><td>{student.email}</td>
-                  <td>
-                    <button type="button" onClick={() => startEdit(student)}>Sửa</button>
-                    <button type="button" onClick={() => handleDelete(student)} style={{ marginLeft: 8 }}>Xóa</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {students.length === 0 && !error && <p>Chưa có sinh viên.</p>}
+      {error && <div className="error-banner" role="alert">{error}<button type="button" onClick={fetchStudents}>Thử lại</button></div>}
+
+      <section className="workspace">
+        <form className="student-form" onSubmit={handleSubmit}>
+          <p className="section-number">01 / {editingId ? 'CHỈNH SỬA' : 'THÊM MỚI'}</p>
+          <h2>Thông tin sinh viên</h2>
+          <p className="section-copy">Điền đủ ba trường bên dưới.</p>
+          <label htmlFor="studentId">Mã số sinh viên</label>
+          <input id="studentId" name="studentId" value={formData.studentId} onChange={handleChange} placeholder="Ví dụ: 236894" required />
+          <label htmlFor="name">Họ và tên</label>
+          <input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Ví dụ: Trần Gia Hân" required />
+          <label htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="sinhvien@nctu.edu.vn" required />
+          <button className="primary-button" type="submit">{editingId ? 'Lưu thay đổi' : 'Thêm sinh viên'} <span aria-hidden="true">↗</span></button>
+          {editingId && <button className="cancel-button" type="button" onClick={cancelEdit}>Hủy chỉnh sửa</button>}
+        </form>
+
+        <div className="list-panel">
+          <div className="list-heading">
+            <div><p className="section-number">02 / DANH SÁCH</p><h2>Sinh viên đã đăng ký</h2></div>
+            <button className="refresh-button" type="button" onClick={fetchStudents} disabled={loading}>Làm mới ↻</button>
+          </div>
+          {loading ? <p className="status-copy">Đang tải dữ liệu. Máy chủ miễn phí có thể cần khoảng một phút để khởi động...</p> : (
+            <div className="table-scroll">
+              <table>
+                <thead><tr><th>MSSV</th><th>HỌ VÀ TÊN</th><th>EMAIL</th><th>THAO TÁC</th></tr></thead>
+                <tbody>
+                  {students.map(student => (
+                    <tr key={student._id}>
+                      <td className="student-id">{student.studentId}</td><td>{student.name}</td><td>{student.email}</td>
+                      <td className="actions"><button type="button" onClick={() => startEdit(student)}>Sửa</button><button type="button" onClick={() => handleDelete(student)}>Xóa</button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {students.length === 0 && !error && <p className="status-copy">Chưa có sinh viên. Hãy thêm bản ghi đầu tiên.</p>}
+              <div className="table-footer"><span>{students.length} kết quả</span><span>React → Express → MongoDB</span></div>
+            </div>
+          )}
         </div>
-      )}
+      </section>
+      <footer className="site-footer"><span>TRẦN GIA HÂN · 236894</span><span>Cloud Lab · 2026</span></footer>
     </main>
   );
 }
