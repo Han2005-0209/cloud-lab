@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build: ./server
@@ -8,7 +6,7 @@ services:
       - "5000:5000"
     environment:
       - PORT=5000
-      - MONGODB_URI=${MONGODB_URI:-mongodb://mongo:27017/cloud_lab}
+      - MONGODB_URI=${MONGODB_URI:?Set MONGODB_URI in .env}
     networks:
       - mern-network
 

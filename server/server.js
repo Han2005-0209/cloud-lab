@@ -4,8 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+const CLIENT_URL = process.env.CLIENT_URL;
+app.use(cors({ origin: CLIENT_URL ? [CLIENT_URL, 'http://localhost:5173'] : true }));
 app.use(express.json());
+app.use((req, res, next) => {
+  res.on('finish', () => console.log(`${req.method} ${req.path} ${res.statusCode}`));
+  next();
+});
 
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cloud_lab';
@@ -21,6 +26,17 @@ const studentSchema = new mongoose.Schema({
   email: { type: String, required: true }
 });
 const Student = mongoose.model('Student', studentSchema);
+
+function health(req, res) {
+  const connected = mongoose.connection.readyState === 1;
+  res.status(connected ? 200 : 503).json({
+    status: connected ? 'UP' : 'DOWN',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+}
+app.get('/health', health);
+app.get('/api/health', health);
 
 // GET API
 app.get('/api/students', async (req, res) => {
